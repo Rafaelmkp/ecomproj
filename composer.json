@@ -1,5 +1,5 @@
 {
-    "name": "Rafaelmkp/ecomproj",
+    "name": "rafaelmkp/ecomproj",
     "authors": [
         {
             "name": "Rafael Panzenhagen",
@@ -13,7 +13,7 @@
     },
     "autoload": {
         "psr-4": {
-            "": "vendor\\ecomproj\\php-classes\\src"
+            "": "vendor\\ecomproj\\php_classes\\src"
         }
     }
 }
