@@ -2,18 +2,19 @@
 
 require_once("vendor/autoload.php");
 
-$app = new \Slim\Slim();
+use \Slim\Slim;
+
+$app = new Slim();
 
 $app->config('debug', true);
 
-$app->get('/', function() {
-    
-	$sql = new DB\Sql();
+$app->get('/', function() 
+{	
+	$page = new Page();
 
-	$results = $sql->select("SELECT * FROM tb_users");
+	$page->setTpl("index");
 
-	echo json_encode($results);
-
+	var_dump($_SERVER["DOCUMENT_ROOT"]);
 });
 
 $app->run();
