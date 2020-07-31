@@ -13,7 +13,7 @@
     },
     "autoload": {
         "psr-4": {
-            "": "vendor\\ecomproj\\php_classes\\src"
+            "Ecomproj\\": "vendor\\ecomproj\\php_classes\\src"
         }
     }
 }

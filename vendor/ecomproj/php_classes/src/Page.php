@@ -1,5 +1,7 @@
 <?php
 
+namespace Ecomproj;
+
 use \Rain\Tpl;
 
 class Page {
@@ -14,13 +16,13 @@ class Page {
     ];
 
     //construtor recebe algumas configs como parametro
-    public function __construct($opts = array()) {
+    public function __construct($opts = array(),$tpl_dir = "views/") {
 
         //
         $this->options = array_merge($this->defaults, $opts);
 
         $config = array(
-            "tpl_dir"   =>  "views/",
+            "tpl_dir"   =>  $tpl_dir,
             "cache_dir" => "views_cache/",
             "debug"     => false
         );

@@ -14,8 +14,12 @@ Template used in this project: [Almsaeed Studio](https://almsaeedstudio.com)
 * PHP - for the back-end
 * Wampserver - for PHP + Apache management and configuration
 * Composer - for depencies management
-* Raintpl - for templates in PHP
+* Raintpl - for template building in PHP
 * PHPmailer - PHP library for sending e-mails
 * Slim framework - microframework for web applications in PHP
+
+### Bibliotecas e templates utilizados
+* PHPmailer - PHP library for sending e-mails
+* AdminLTE - admin template
 
 (under construction...)

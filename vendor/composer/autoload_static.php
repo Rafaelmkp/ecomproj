@@ -6,8 +6,18 @@ namespace Composer\Autoload;
 
 class ComposerStaticInitad118a6097d7ea9b0b4c0869791a180e
 {
-    public static $fallbackDirsPsr4 = array (
-        0 => __DIR__ . '/..' . '/ecomproj/php_classes/src',
+    public static $prefixLengthsPsr4 = array (
+        'E' => 
+        array (
+            'Ecomproj\\' => 9,
+        ),
+    );
+
+    public static $prefixDirsPsr4 = array (
+        'Ecomproj\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/ecomproj/php_classes/src',
+        ),
     );
 
     public static $prefixesPsr0 = array (
@@ -41,7 +51,8 @@ class ComposerStaticInitad118a6097d7ea9b0b4c0869791a180e
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->fallbackDirsPsr4 = ComposerStaticInitad118a6097d7ea9b0b4c0869791a180e::$fallbackDirsPsr4;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitad118a6097d7ea9b0b4c0869791a180e::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitad118a6097d7ea9b0b4c0869791a180e::$prefixDirsPsr4;
             $loader->prefixesPsr0 = ComposerStaticInitad118a6097d7ea9b0b4c0869791a180e::$prefixesPsr0;
             $loader->classMap = ComposerStaticInitad118a6097d7ea9b0b4c0869791a180e::$classMap;
 
