@@ -1,6 +1,6 @@
-	<?php 
+<?php 
 
-namespace \Ecomproj\DB;
+namespace Ecomproj\DB;
 
 class Sql {
 
