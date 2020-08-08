@@ -314,3 +314,65 @@ CREATE INDEX `fk_userspasswordsrecoveries_users_idx` ON `tb_userspasswordsrecove
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_users_save`(
+pdesperson VARCHAR(64), 
+pdeslogin VARCHAR(64), 
+pdespassword VARCHAR(256), 
+pdesemail VARCHAR(128), 
+pnrphone BIGINT, 
+pinadmin TINYINT
+)
+BEGIN
+	
+    DECLARE vidperson INT;
+    
+	INSERT INTO tb_persons (desperson, desemail, nrphone)
+    VALUES(pdesperson, pdesemail, pnrphone);
+    
+    SET vidperson = LAST_INSERT_ID();
+    
+    INSERT INTO tb_users (idperson, deslogin, despassword, inadmin)
+    VALUES(vidperson, pdeslogin, pdespassword, pinadmin);
+    
+    SELECT * FROM tb_users a INNER JOIN tb_persons b USING(idperson) WHERE a.iduser = LAST_INSERT_ID();
+    
+END ;;
+DELIMITER ;sp_users_save
+
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_usersupdate_save`(
+piduser INT,
+pdesperson VARCHAR(64), 
+pdeslogin VARCHAR(64), 
+pdespassword VARCHAR(256), 
+pdesemail VARCHAR(128), 
+pnrphone BIGINT, 
+pinadmin TINYINT
+)
+BEGIN
+	
+    DECLARE vidperson INT;
+    
+	SELECT idperson INTO vidperson
+    FROM tb_users
+    WHERE iduser = piduser;
+    
+    UPDATE tb_persons
+    SET 
+		desperson = pdesperson,
+        desemail = pdesemail,
+        nrphone = pnrphone
+	WHERE idperson = vidperson;
+    
+    UPDATE tb_users
+    SET
+		deslogin = pdeslogin,
+        despassword = pdespassword,
+        inadmin = pinadmin
+	WHERE iduser = piduser;
+    
+    SELECT * FROM tb_users a INNER JOIN tb_persons b USING(idperson) WHERE a.iduser = piduser;
+    
+END ;;

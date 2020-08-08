@@ -57,8 +57,70 @@ class User extends Model {
         }
     }
 
-    public static function logout(){
-
+    public static function logout()
+    {
         $_SESSION[User::SESSION] = NULL;
+    }
+
+    public static function listAll() 
+    {
+        $sql = new Sql();
+
+        return $sql->select("SELECT * FROM tb_users u 
+            INNER JOIN tb_persons p USING(idperson) ORDER BY p.desperson");
+    }
+
+    public function save() 
+    {
+        $sql = new Sql();
+       
+        $results = $sql->select("CALL sp_users_save
+            (:desperson, :deslogin, :despassword, :desemail, :nrphone, :inadmin)", array(
+            ":desperson"=>$this->getdesperson(),
+            ":deslogin"=>$this->getdeslogin(),
+            ":despassword"=>$this->getdespassword(),
+            ":desemail"=>$this->getdesemail(),
+            ":nrphone"=>$this->getnrphone(),
+            ":inadmin"=>$this->getinadmin()
+        ));
+
+        $this->setData($results[0]);
+    }
+
+    public function get($iduser)
+    {
+        $sql = new Sql();
+
+        $results = $sql->select("SELECT * FROM tb_users u INNER JOIN tb_persons p
+            USING(idperson) WHERE u.iduser = :iduser", array(
+            ":iduser"=>$iduser
+        ));
+        
+        $this->setData($results[0]);    
+    }
+
+    public function update() 
+    {
+
+        $sql = new Sql();
+        $results = $sql->select("CALL sp_usersupdate_save
+            (:iduser, :desperson, :deslogin, :despassword, :desemail, :nrphone, :inadmin)", array(
+            ":iduser"=>$this->getiduser(),
+            ":desperson"=>$this->getdesperson(),
+            ":deslogin"=>$this->getdeslogin(),
+            ":despassword"=>$this->getdespassword(),
+            ":desemail"=>$this->getdesemail(),
+            ":nrphone"=>$this->getnrphone(),
+            ":inadmin"=>$this->getinadmin()
+        ));    
+    }
+
+    public function delete()
+    {
+        $sql = new Sql();
+
+        $sql->query("CALL sp_users_delete(:iduser)", array(
+            ":iduser"=>$this->getiduser()
+        ));
     }
 }
