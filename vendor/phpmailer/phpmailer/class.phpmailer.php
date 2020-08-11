@@ -1257,8 +1257,8 @@ class PHPMailer
                     }
                     return false;
                 }
-            }
 
+            }
             // Set whether the message is multipart/alternative
             if ($this->alternativeExists()) {
                 $this->ContentType = 'multipart/alternative';

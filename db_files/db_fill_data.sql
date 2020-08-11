@@ -22,4 +22,13 @@ update tb_users set inadmin = 1 where iduser = 2;
 update tb_users set inadmin = 1 where iduser = 3;
 update tb_users set inadmin = 1 where iduser = 4;
 
+CALL sp_users_save
+            ('rafaelmkp', 'rafaelmkp', 'rafaelmkp', 'rafaelmkp@mail.com', 519123456789, 1);
+
+select * from tb_users;
+
 select * from tb_persons;
+
+select * from tb_persons 
+inner join tb_users using(idperson)
+where desemail = 'raquel@mail.com';

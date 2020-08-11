@@ -16,7 +16,7 @@ Template used in this project: [Almsaeed Studio](https://almsaeedstudio.com)
 * Composer - for depencies management
 * Raintpl - for template building in PHP
 * PHPmailer - PHP library for sending e-mails
-* Slim framework - microframework for web applications in PHP
+* Slim framework - microframework for web applications routes in PHP
 
 ### Bibliotecas e templates utilizados
 * PHPmailer - PHP library for sending e-mails

@@ -4,17 +4,23 @@ namespace Ecomproj\Model;
 
 use \Ecomproj\DB\Sql;
 use \Ecomproj\Model;
+use \Ecomproj\Mailer;
 
 class User extends Model {
 
+    const CIPHER = 'aes-128-cbc';
+
     const SESSION = "User";
+    //student is aware of security issues by publishing SECRET on github
+    //used for academic purposes only
+    const SECRET  = "t3ngLkihD8gf0uEn";
 
     public static function login($login, $password) 
     {
         $sql = new Sql();
 
-        $results = $sql->select("SELECT * FROM tb_users WHERE deslogin = :LOGIN", array(
-            ":LOGIN"=>$login
+        $results = $sql->select("SELECT * FROM tb_users WHERE deslogin = :login", array(
+            ":login"=>$login
         ));
 
         if(count($results) === 0)
@@ -31,10 +37,9 @@ class User extends Model {
 
             $_SESSION[User::SESSION] = $user->getValues();
             return $user;
-
-
-
-        } else {
+        } 
+        else 
+        {
             throw new \Exception("Invalid user or incorrect password");
         }
 
@@ -123,4 +128,118 @@ class User extends Model {
             ":iduser"=>$this->getiduser()
         ));
     }
+
+    public static function getForgot($email) 
+    {
+        $sql = new Sql();
+        $results = $sql->select("SELECT * FROM tb_persons p INNER JOIN tb_users u USING(idperson)
+            WHERE p.desemail = :email", array(
+            ":email"=>$email    
+        ));
+
+        if(count($results) === 0) 
+        {
+            throw new \Exception("Não foi possível recuperar a senha.");
+        } 
+        else 
+        {
+            $data = $results[0];
+
+            $results2 = $sql->select("CALL sp_userspasswordsrecoveries_create(:iduser, :desip)", array(
+                ":iduser"=>$data['iduser'],
+                ":desip"=>$_SERVER["REMOTE_ADDR"]
+            ));
+
+            if(count($results) === 0)
+            {
+                throw new \Exception("Não foi possível recuperar a senha.");
+            }
+            else
+            {
+                $dataRecovery = $results2[0];
+
+                $code = base64_encode(openssl_encrypt(
+                    $dataRecovery["idrecovery"],
+                    "aes-128-cbc",
+                    User::SECRET,
+                    0,
+                    User::SECRET
+                ));
+
+                $link = "http://hcodecommerce.com.br/admin/forgot/reset?code=$code";
+
+                $mailer = new Mailer($data['desemail'], $data['desperson'],
+                    "redefinir senha Ecomproj Store", "forgot", array(
+                    "name"=>$data["desperson"],
+                    "link"=>$link
+                ));
+
+                $mailer->send();
+
+                return $data;
+            }
+        }
+    }
+
+    public static function validForgotDecrypt($code)
+    {
+        $decode = base64_decode($code);
+
+        $ivlen = openssl_cipher_iv_length(User::CIPHER);
+
+        $iv = openssl_random_pseudo_bytes($ivlen);
+
+        $decripted = openssl_decrypt(
+            $decode,
+            "aes-128-cbc",
+            User::SECRET,
+            0,
+            User::SECRET
+        );
+
+        $sql = new Sql();
+
+        $results = $sql->select("SELECT * FROM tb_userspasswordsrecoveries upr
+            INNER JOIN tb_users u USING (iduser)
+            INNER JOIN tb_persons p USING (idperson)
+            WHERE upr.idrecovery = :idrecovery
+                AND 
+                upr.dtrecovery IS NULL
+                AND
+                DATE_ADD(upr.dtregister, INTERVAL 1 HOUR) >= NOW();", 
+        array(
+            ":idrecovery"=>$decripted
+        ));
+
+        if(count($results) === 0)
+        {
+            throw new \Exception("Não foi possível recuperar a senha.");
+        } 
+        else 
+        {
+            return $results[0];
+        }
+    }
+
+    public static function setForgotUsed($idrecovery) 
+    {
+        $sql = new Sql();
+
+        $sql->query("UPDATE tb_userspasswordsrecovery SET dtrecovery = NOW()
+            WHERE idrecovery = :idrecovery", array(
+                ":idrecovery"=>$idrecovery
+            ));
+    }
+
+    public function setPassword($password)
+    {
+        $sql = new Sql();
+
+        $sql->select("UPDATE tb_users SET despassword = :password WHERE iduser = :iduser", array(
+            ":password"=>$password,
+            ":iduser"=>$this->getiduser()
+        ));
+    }
 }
+
+?>

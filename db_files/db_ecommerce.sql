@@ -341,7 +341,7 @@ BEGIN
 END ;;
 DELIMITER ;sp_users_save
 
-
+-- sp_usersupdate_save
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_usersupdate_save`(
 piduser INT,
 pdesperson VARCHAR(64), 
@@ -375,4 +375,51 @@ BEGIN
     
     SELECT * FROM tb_users a INNER JOIN tb_persons b USING(idperson) WHERE a.iduser = piduser;
     
+END ;;sp_users_save
+
+
+-- sp_users_delete
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_users_delete`(
+piduser INT
+)
+BEGIN
+	
+    DECLARE vidperson INT;
+    
+	SELECT idperson INTO vidperson
+    FROM tb_users
+    WHERE iduser = piduser;
+    
+    DELETE FROM tb_users WHERE iduser = piduser;
+    DELETE FROM tb_persons WHERE idperson = vidperson;
+    
 END ;;
+
+DELIMITER $$
+CREATE PROCEDURE `sp_userspasswordsrecoveries_create`(
+piduser INT,
+pdesip VARCHAR(45)
+)
+BEGIN
+	
+	INSERT INTO tb_userspasswordsrecoveries (iduser, desip)
+    VALUES(piduser, pdesip);
+    
+    SELECT * FROM tb_userspasswordsrecoveries
+    WHERE idrecovery = LAST_INSERT_ID();
+    
+END$$
+DELIMITER ;	
+
+-- query validating password recovery link
+SELECT * FROM tb_userspasswordsrecoveries upr
+INNER JOIN tb_users u USING (iduser)
+INNER JOIN tb_persons p USING (idperson)
+WHERE 
+	upr.idrecovery
+	AND 
+	upr.dtrecovery IS NULL
+    AND
+	DATE_ADD(upr.dtregister, INTERVAL 1 HOUR) >= NOW();
+
+SELECT * FROM tb_userspasswordsrecoveries;

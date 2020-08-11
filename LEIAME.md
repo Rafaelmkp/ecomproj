@@ -14,7 +14,7 @@ Template usado no projeto [Almsaeed Studio](https://almsaeedstudio.com)
 * Wampserver - para configuração e gerenciamento do PHP + Apache
 * Composer - para gerenciamento de dependências
 * Raintpl - para construção templates em PHP
-* Slim framework - microframework para aplicações web em PHP
+* Slim framework - microframework para rotas de aplicações web em PHP
 
 ### Bibliotecas e templates utilizados
 * PHPmailer - biblioteca PHP para envio de e-mails
