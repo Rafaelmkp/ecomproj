@@ -185,10 +185,6 @@ class User extends Model {
     {
         $decode = base64_decode($code);
 
-        $ivlen = openssl_cipher_iv_length(User::CIPHER);
-
-        $iv = openssl_random_pseudo_bytes($ivlen);
-
         $decripted = openssl_decrypt(
             $decode,
             "aes-128-cbc",
