@@ -32,3 +32,7 @@ select * from tb_persons;
 select * from tb_persons 
 inner join tb_users using(idperson)
 where desemail = 'raquel@mail.com';
+
+select * from tb_categories;
+
+call sp_categories_save(NULL, 'Google');

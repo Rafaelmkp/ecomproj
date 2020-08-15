@@ -4,7 +4,6 @@ namespace Ecomproj\Model;
 
 use \Ecomproj\DB\Sql;
 use \Ecomproj\Model;
-use \Ecomproj\Mailer;
 
 class Category extends Model {
 
