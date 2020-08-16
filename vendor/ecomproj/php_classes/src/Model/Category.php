@@ -22,7 +22,7 @@ class Category extends Model {
             ":idcategory"=>$this->getidcategory(),
             ":descategory"=>$this->getdescategory()
         ));
-
+    
         $this->setData($results[0]);
 
         Category::updateFile();

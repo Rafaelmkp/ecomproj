@@ -126,7 +126,7 @@ CREATE INDEX `fk_carts_addresses_idx` ON `tb_carts` (`idaddress` ASC);
 DROP TABLE IF EXISTS `tb_products` ;
 
 CREATE TABLE IF NOT EXISTS `tb_products` (
-  `idproduct` INT(11) NOT NULL,
+  `idproduct` INT(11) NOT NULL AUTO_INCREMENT,
   `desproduct` VARCHAR(64) NOT NULL,
   `vlprice` DECIMAL(10,2) NOT NULL,
   `vlwidth` DECIMAL(10,2) NOT NULL,
@@ -169,6 +169,11 @@ CREATE INDEX `FK_cartsproducts_carts_idx` ON `tb_cartsproducts` (`idcart` ASC);
 
 CREATE INDEX `FK_cartsproducts_products_idx` ON `tb_cartsproducts` (`idproduct` ASC);
 
+alter table tb_cartsproducts add constraint fk_cartsproducts_products
+FOREIGN KEY (idproduct)
+REFERENCES tb_products (idproduct)
+ON DELETE CASCADE
+ON UPDATE CASCADE;
 
 -- -----------------------------------------------------
 -- Table `tb_categories`
@@ -259,9 +264,15 @@ CREATE TABLE IF NOT EXISTS `tb_productscategories` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
+alter table tb_productscategories drop foreign key fk_productscategories_products;
+
+alter table tb_productscategories add constraint fk_productscategories_products
+FOREIGN KEY (idproduct)
+REFERENCES tb_products (idproduct)
+ON DELETE CASCADE
+ON UPDATE CASCADE;
+
 CREATE INDEX `fk_productscategories_products_idx` ON `tb_productscategories` (`idproduct` ASC);
-
-
 -- -----------------------------------------------------
 -- Table `tb_userslogs`
 -- -----------------------------------------------------
@@ -492,4 +503,6 @@ BEGIN
 END$$
 
 DELIMITER ;
+
+alter table tb_products modify idproduct int(11) not null auto_increment;
 
