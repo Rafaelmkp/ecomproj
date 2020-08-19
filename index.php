@@ -2,6 +2,7 @@
 
 session_start();
 require_once("vendor/autoload.php");
+require_once("functions.php");
 
 use \Slim\Slim;
 use \Ecomproj\Page;
@@ -9,7 +10,7 @@ use \Ecomproj\PageAdmin;
 use \Ecomproj\Model\User;
 use \Ecomproj\Model\Category;
 use \Ecomproj\Model\Product;
-	
+
 $app = new Slim();
 
 $app->config('debug', true);
@@ -17,11 +18,15 @@ $app->config('debug', true);
 //site
 $app->get('/', function() 
 {
-	echo "app-get-site";	
+	$products = Product::listAll();
+
 	$page = new Page();
 
-	$page->setTpl("index");
+	$page->setTpl("index", [
+		'products'=>Product::checklist($products)
+	]);
 });
+//end site
 
 //admin2
 $app->get('/admin', function() 
@@ -289,7 +294,8 @@ $app->post("/admin/products/:idproduct", function($idproduct){
 
 	$product->save();
 
-	$product->setPhoto($_FILES['file']);
+	if ((int)$_FILES["file"]["size"] > 0) 
+        $product->setPhoto($_FILES["file"]);
 
 	header("Location: /admin/products");
 	exit;
