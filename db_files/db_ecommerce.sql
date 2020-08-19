@@ -326,6 +326,12 @@ SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
+CREATE TABLE `tb_categoriesproducts` (
+  `idcategory` int(11) NOT NULL,
+  `idproduct` int(11) NOT NULL,
+  PRIMARY KEY (`idcategory`,`idproduct`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_users_save`(
 pdesperson VARCHAR(64), 

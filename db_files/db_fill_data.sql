@@ -37,7 +37,7 @@ select * from tb_categories;
 
 call sp_categories_save(NULL, 'Google');
 
-SELECT * FROM tb_products;
+SELECT * FROM tb_products;	
 
 CALL sp_products_save(null, 
 					  'iPad 7 32GB Wi-Fi Tela 10,2'' 8 MP Cinza Espacial Apple',
@@ -54,3 +54,19 @@ INSERT INTO tb_products (desproduct, vlprice, vlwidth, vlheight, vllength, vlwei
 ('Smartphone Samsung Galaxy J5 Pro', 1299, 14.6, 7.1, 0.8, 0.160, 'smartphone-samsung-galaxy-j5'),
 ('Smartphone Samsung Galaxy J7 Prime', 1149, 15.1, 7.5, 0.8, 0.160, 'smartphone-samsung-galaxy-j7'),
 ('Smartphone Samsung Galaxy J3 Dual', 679.90, 14.2, 7.1, 0.7, 0.138, 'smartphone-samsung-galaxy-j3');
+
+-- query for products related to x category
+SELECT * FROM tb_products WHERE idproduct IN(
+	SELECT a.idproduct
+    FROM tb_products a
+    INNER JOIN tb_productscategories b ON a.idproduct = b.idproduct
+    WHERE b.idcategory = 6
+);
+
+-- query for products NOT related to x category
+SELECT * FROM tb_products WHERE idproduct NOT IN(
+	SELECT a.idproduct
+    FROM tb_products a
+    INNER JOIN tb_productscategories b ON a.idproduct = b.idproduct
+    WHERE b.idcategory = 6
+);
