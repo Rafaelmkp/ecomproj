@@ -1,7 +1,12 @@
 <?php
 
+use \Slim\Slim;
+use \Ecomproj\Page;
 use \Ecomproj\PageAdmin;
 use \Ecomproj\Model\User;
+use \Ecomproj\Model\Category;
+use \Ecomproj\Model\Product;
+
 
 $debug = 'admin - require worked';
 var_dump($debug);
