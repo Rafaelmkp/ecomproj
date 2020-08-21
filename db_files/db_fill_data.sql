@@ -37,7 +37,7 @@ select * from tb_categories;
 
 call sp_categories_save(NULL, 'Google');
 
-SELECT * FROM tb_products;	
+DROP TABLE tb_categoriesproducts;
 
 CALL sp_products_save(null, 
 					  'iPad 7 32GB Wi-Fi Tela 10,2'' 8 MP Cinza Espacial Apple',
@@ -70,3 +70,13 @@ SELECT * FROM tb_products WHERE idproduct NOT IN(
     INNER JOIN tb_productscategories b ON a.idproduct = b.idproduct
     WHERE b.idcategory = 6
 );
+
+-- query for page make-up
+SELECT SQL_CALC_FOUND_ROWS *
+FROM tb_products a
+INNER JOIN tb_productscategories b ON a.idproduct = b.idproduct
+INNER JOIN tb_categories c ON c.idcategory = b.idcategory
+WHERE c.idcategory = 6
+LIMIT 0, 3;
+
+SELECT FOUND_ROWS() AS nrtotal;
