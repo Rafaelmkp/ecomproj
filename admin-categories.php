@@ -1,14 +1,10 @@
 <?php
 
-use \Slim\Slim;
-use \Ecomproj\Page;
 use \Ecomproj\PageAdmin;
+use \Ecomproj\Model\User;
 use \Ecomproj\Model\Category;
 
-$app = new Slim();
-
-$app->config('debug', true);
-
+//admin categories page
 $app->get("/admin/categories", function()
 {	
 	User::verifyLogin();
@@ -21,6 +17,7 @@ $app->get("/admin/categories", function()
 	]);
 });
 
+//create category page
 $app->get("/admin/categories/create", function()
 {	
 	User::verifyLogin();
@@ -30,6 +27,7 @@ $app->get("/admin/categories/create", function()
 	$page->setTpl("categories-create");
 });
 
+//create category function route
 $app->post("/admin/categories/create", function()
 {	
 	User::verifyLogin();
@@ -44,6 +42,7 @@ $app->post("/admin/categories/create", function()
 	exit;
 });
 
+//delete category function route
 $app->get("/admin/categories/:idcategory/delete", function($idcategory)
 {	
 	User::verifyLogin();
@@ -58,6 +57,7 @@ $app->get("/admin/categories/:idcategory/delete", function($idcategory)
 	exit;
 });
 
+//update category page
 $app->get("/admin/categories/:idcategory", function($idcategory)
 {	
 	User::verifyLogin();
@@ -73,6 +73,7 @@ $app->get("/admin/categories/:idcategory", function($idcategory)
 	]);
 });
 
+//update category function route
 $app->post("/admin/categories/:idcategory", function($idcategory)
 {	
 	User::verifyLogin();
@@ -88,20 +89,61 @@ $app->post("/admin/categories/:idcategory", function($idcategory)
 	header("Location: /admin/categories");
 	exit;
 });
-	
 
-$app->get("/categories/:idcategory", function($idcategory){
+//list products in x category page
+$app->get("/admin/categories/:idcategory/products", function($idcategory){
+
+	User::verifyLogin();
 
 	$category = new Category();
 
 	$category->get((int)$idcategory);
 
-	$page = new Page();
+	$page = new PageAdmin();
 
-	$page->setTpl("category",[
-		'category'=>$category->getValues()
+	$page->setTpl("categories-products",[
+		'category'=>$category->getValues(),
+		'productsRelated'=>$category->getProducts(),
+		'productsNotRelated'=>$category->getProducts(false)
 	]);
+});
 
+//add x product x category function/page
+$app->get("/admin/categories/:idcategory/products/:idproduct/add", function($idcategory, $idproduct){
+
+	User::verifyLogin();
+
+	$category = new Category();
+
+	$category->get((int)$idcategory);
+
+	$product = new Product();
+
+	$product->get((int)$idproduct);
+
+	$category->addProduct($product);
+
+	header("Location: /admin/categories/".$idcategory."/products");
+	exit;
+});
+
+//remove x product x category function/page
+$app->get("/admin/categories/:idcategory/products/:idproduct/remove", function($idcategory, $idproduct){
+
+	User::verifyLogin();
+
+	$category = new Category();
+
+	$category->get((int)$idcategory);
+
+	$product = new Product();
+
+	$product->get((int)$idproduct);
+
+	$category->removeProduct($product);
+
+	header("Location: /admin/categories/".$idcategory."/products");
+	exit;
 });
 
 ?>  

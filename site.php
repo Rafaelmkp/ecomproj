@@ -1,16 +1,10 @@
 <?php
 
-use \Slim\Slim;
 use \Ecomproj\Page;
-use \Ecomproj\PageAdmin;
-use \Ecomproj\Model\User;
 use \Ecomproj\Model\Category;
 use \Ecomproj\Model\Product;
 
-
-$debug = 'site - require worked';
-var_dump($debug);
-
+//index page
 $app->get('/', function() 
 {
 	$products = Product::listAll();
@@ -22,6 +16,7 @@ $app->get('/', function()
 	]);
 });
 
+//x category products page
 $app->get("/categories/:idcategory", function($idcategory){
 
 	$page = (isset($_GET['page'])) ? (int)$_GET['page'] : 1;
@@ -34,12 +29,14 @@ $app->get("/categories/:idcategory", function($idcategory){
 	
 	$pages = [];
 
+	//calculates how many product pages in x category
 	for($i= 1; $i <= $pagination['pages']; $i++) {
 		array_push($pages, [
 			'link'=>'/categories/'.$category->getidcategory().'?page='.$i,
 			'page'=>$i
 		]);
 	}
+
 	$page = new Page();
 
 	$page->setTpl("category",[
@@ -47,7 +44,6 @@ $app->get("/categories/:idcategory", function($idcategory){
 		'products'=>$pagination["data"],
 		'pages'=>$pages
 	]);
-
 });
 
 ?>

@@ -1,15 +1,7 @@
 <?php
 
-use \Slim\Slim;
-use \Ecomproj\Page;
 use \Ecomproj\PageAdmin;
 use \Ecomproj\Model\User;
-use \Ecomproj\Model\Category;
-use \Ecomproj\Model\Product;
-
-
-$debug = 'admin - require worked';
-var_dump($debug);
 
 $app->get('/admin', function() 
 {	
@@ -20,6 +12,7 @@ $app->get('/admin', function()
 	$page->setTpl("index");
 });
 
+//login page
 $app->get('/admin/login', function() 
 {	
 	$page = new PageAdmin([
@@ -30,24 +23,27 @@ $app->get('/admin/login', function()
 	$page->setTpl("login");
 });
 
-//validacao do login eh realizada por metodo post
+//login validation in post method
 $app->post('/admin/login', function() 
 {
 	User::login($_POST["login"],$_POST["password"]);
 
-	//se login validado com sucesso, redireciona 
+	//if successful validation, redirects
 	header("Location: /admin");
 	exit;
 
 });
 
+//logout function
 $app->get('/admin/logout', function() {
 	User::logout();
 
+	//redirects to login page
 	header("Location: /admin/login");
 	exit;
 });
 
+//forgot password page
 $app->get('/admin/forgot', function() 
 {
 	$page = new PageAdmin([
@@ -59,6 +55,7 @@ $app->get('/admin/forgot', function()
 
 });
 
+//forgot password function route
 $app->post('/admin/forgot', function()
 {
 	$user = User::getForgot($_POST["email"]);
@@ -67,6 +64,7 @@ $app->post('/admin/forgot', function()
 	exit;
 });
 
+//forgot password email sent page
 $app->get('/admin/forgot/sent', function()
 {
 	$page = new PageAdmin([
@@ -78,6 +76,7 @@ $app->get('/admin/forgot/sent', function()
 
 });
 
+//reset password page
 $app->get("/admin/forgot/reset", function () 
 {
 	$user = User::validForgotDecrypt($_GET["code"]);
@@ -93,6 +92,7 @@ $app->get("/admin/forgot/reset", function ()
 	));
 });
 
+//reset password function route
 $app->post("/admin/forgot/reset", function () 
 {
 	$forgot = User::validForgotDecrypt($_POST["code"]);

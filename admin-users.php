@@ -1,13 +1,9 @@
 <?php
 
-use \Slim\Slim;
 use \Ecomproj\PageAdmin;
 use \Ecomproj\Model\User;
 
-$app = new Slim();
-
-$app->config('debug', true);
-
+//show users page
 $app->get('/admin/users', function() 
 {	
 	User::verifyLogin();
@@ -21,7 +17,7 @@ $app->get('/admin/users', function()
 	));
 });
 
-
+//create user page
 $app->get('/admin/users/create', function() 
 {	
 	User::verifyLogin();
@@ -31,21 +27,7 @@ $app->get('/admin/users/create', function()
 	$page->setTpl("users-create");
 });
 
-$app->get('/admin/users/:iduser', function($iduser) 
-{	
-	User::verifyLogin();
-
-	$user = new User();
-
-	$user ->get((int)$iduser);
-
-	$page = new PageAdmin();
-
-	$page->setTpl("users-update", array(
-		"user"=>$user->getValues()
-	));
-});
-
+//create user function route
 $app->post('/admin/users/create', function() 
 {	
 	User::verifyLogin();
@@ -62,21 +44,23 @@ $app->post('/admin/users/create', function()
 	exit;
 });
 
-$app->get('/admin/users/:iduser/delete', function($iduser) 
+//update user page
+$app->get('/admin/users/:iduser', function($iduser) 
 {	
 	User::verifyLogin();
 
 	$user = new User();
 
-	$user->get((int)$iduser);
+	$user ->get((int)$iduser);
 
-	$user->delete();
+	$page = new PageAdmin();
 
-	header("Location: /admin/users");
-	exit;
-	
+	$page->setTpl("users-update", array(
+		"user"=>$user->getValues()
+	));
 });
 
+//update user function route
 $app->post('/admin/users/:iduser', function($iduser) 
 {	
 	User::verifyLogin();
@@ -93,5 +77,19 @@ $app->post('/admin/users/:iduser', function($iduser)
 	exit;	
 });
 
+//delete user function route
+$app->get('/admin/users/:iduser/delete', function($iduser) 
+{	
+	User::verifyLogin();
+
+	$user = new User();
+
+	$user->get((int)$iduser);
+
+	$user->delete();
+
+	header("Location: /admin/users");
+	exit;
+});
 
 ?>
