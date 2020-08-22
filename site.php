@@ -3,6 +3,7 @@
 use \Ecomproj\Page;
 use \Ecomproj\Model\Category;
 use \Ecomproj\Model\Product;
+use \Ecomproj\Model\Cart;
 
 //index page
 $app->get('/', function() 
@@ -60,4 +61,12 @@ $app->get('/products/:desurl', function($desurl)
 	]);
 });
 
+$app->get('/cart', function()
+{
+	$cart = Cart::getFromSession();
+
+	$page = new Page();
+
+	$page->setTpl("cart");
+})
 ?>

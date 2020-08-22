@@ -80,3 +80,6 @@ WHERE c.idcategory = 6
 LIMIT 0, 3;
 
 SELECT FOUND_ROWS() AS nrtotal;
+
+DROP TABLE IF EXISTS tb_carts;
+

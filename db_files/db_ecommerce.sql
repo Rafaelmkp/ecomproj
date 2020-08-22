@@ -332,6 +332,20 @@ CREATE TABLE `tb_categoriesproducts` (
   PRIMARY KEY (`idcategory`,`idproduct`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE `tb_carts` (
+  `idcart` int(11) NOT NULL AUTO_INCREMENT,
+  `dessessionid` varchar(64) NOT NULL,
+  `iduser` int(11) DEFAULT NULL,
+  `deszipcode` char(8) DEFAULT NULL,
+  `vlfreight` decimal(10,2) DEFAULT NULL,
+  `nrdays` int(11) DEFAULT NULL,
+  `dtregister` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`idcart`),
+  KEY `FK_carts_users_idx` (`iduser`),
+  CONSTRAINT `fk_carts_users` FOREIGN KEY (`iduser`) REFERENCES `tb_users` (`iduser`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_users_save`(
 pdesperson VARCHAR(64), 
@@ -512,3 +526,39 @@ DELIMITER ;
 
 alter table tb_products modify idproduct int(11) not null auto_increment;
 
+DELIMITER $$
+CREATE PROCEDURE `sp_carts_save`(
+pidcart INT,
+pdessessionid VARCHAR(64),
+piduser INT,
+pdeszipcode CHAR(8),
+pvlfreight DECIMAL(10,2),
+pnrdays INT
+)
+BEGIN
+
+    IF pidcart > 0 THEN
+        
+        UPDATE tb_carts
+        SET
+            dessessionid = pdessessionid,
+            iduser = piduser,
+            deszipcode = pdeszipcode,
+            vlfreight = pvlfreight,
+            nrdays = pnrdays
+        WHERE idcart = pidcart;
+        
+    ELSE
+        
+        INSERT INTO tb_carts (dessessionid, iduser, deszipcode, vlfreight, nrdays)
+        VALUES(pdessessionid, piduser, pdeszipcode, pvlfreight, pnrdays);
+        
+        SET pidcart = LAST_INSERT_ID();
+        
+    END IF;
+    
+    SELECT * FROM tb_carts WHERE idcart = pidcart;
+
+END$$
+
+DELIMITER ;
