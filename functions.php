@@ -5,6 +5,8 @@ use \Ecomproj\Model\User;
 
 function formatPrice($vlPrice)
 {
+    if(!$vlprice > 0) $vlprice = 0;
+    
     return number_format($vlPrice, 2, ",", ".");        
 }
 
