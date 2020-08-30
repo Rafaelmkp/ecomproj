@@ -116,8 +116,4 @@ $app->post("/admin/forgot/reset", function ()
 
 	$page->setTpl("forgot-reset-success");
 });
-
-
-
-
 ?>

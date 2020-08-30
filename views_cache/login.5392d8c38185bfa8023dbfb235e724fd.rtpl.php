@@ -50,6 +50,16 @@
                     <div class="clear"></div>
                 </form>                    
             </div>
+
+            <?php if( $errorRegister != '' ){ ?>
+
+            <div class="alert alert-danger">
+                <?php echo htmlspecialchars( $errorRegister, ENT_COMPAT, 'UTF-8', FALSE ); ?>
+
+            </div>
+            <?php } ?>
+
+
             <div class="col-md-6">
                 <form id="register-form-wrap" action="/register" class="register" method="post">
                     <h2>Criar conta</h2>
