@@ -299,4 +299,37 @@ $app->post("/forgot/reset", function ()
 	$page->setTpl("forgot-reset-success");
 });
 
+$app->get("/profile", function() 
+{
+	User::verifyLogin(false);
+
+	$user = User::getFromSession();
+
+	$page = new Page();
+
+	$page->setTpl("profile", array(
+		'user'=>$user->getValues(),
+		'profileMsg'=>'',
+		'profileError'=>''
+	));
+});
+
+$app->post("/profile", function()
+{
+	User::verifyLogin(false);
+
+	$user = User::getFromSession();
+
+	//precaution against command injection 
+	//avoid access to admin page
+	$_POST['inadmin'] = $user->getinadmin();
+	$_POST['despassword'] = $user->getdespassword();
+
+	$user->setData($_POST);
+
+	$user->update();
+
+	header("Location: /profile");
+	exit;
+});
 ?>

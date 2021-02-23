@@ -57,7 +57,6 @@ class Category extends Model {
         $html = [];
 
         foreach($categories as $row) {
-
             array_push($html, '<li><a href="/categories/'.$row["idcategory"].'">'.
                 $row["descategory"].'</a></li>');
         }

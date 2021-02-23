@@ -1,19 +1,19 @@
 {
-    "name": "rafaelmkp/ecomproj",
-    "authors": [
-        {
-            "name": "Rafael Panzenhagen",
-            "email": "rafaelmkptestes@gmail.com.br"
-        }
-    ],
-    "require": {
-    	"phpmailer/phpmailer":"5.2.22",
-    	"slim/slim":"2.0",
-    	"rain/raintpl":"3.0.0"
-    },
-    "autoload": {
-        "psr-4": {
-            "Ecomproj\\": "vendor\\ecomproj\\php_classes\\src"
-        }
+  "name": "rafaelmkp/ecomproj",
+  "authors": [
+    {
+      "name": "Rafael Panzenhagen",
+      "email": "rafaelmkptestes@gmail.com.br"
     }
+  ],
+  "require": {
+    "phpmailer/phpmailer": "5.2.22",
+    "slim/slim": "2.0",
+    "rain/raintpl": "3.0.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Ecomproj\\": "ecomproj\\php_classes\\src"
+    }
+  }
 }

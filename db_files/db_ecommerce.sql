@@ -367,7 +367,7 @@ BEGIN
     INSERT INTO tb_users (idperson, deslogin, despassword, inadmin)
     VALUES(vidperson, pdeslogin, pdespassword, pinadmin);
     
-    SELECT * FROM tb_users a INNER JOIN tb_persons b USING(idperson) WHERE a.iduser = LAST_INSERT_ID();
+    SELECT * FROM tb_users a INNER JOIN tb_persons b USING(idperson) WHERE a.iduser = vidperson;
     
 END ;;
 DELIMITER ;sp_users_save
