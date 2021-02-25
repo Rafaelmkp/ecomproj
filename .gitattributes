@@ -1,11 +1,11 @@
-res/site/css linguist-vendored
-res/site/fonts linguist-vendored
-res/site/img linguist-vendored
-res/site/js linguist-vendored
+res/site/css/* linguist-vendored
+res/site/fonts/* linguist-vendored
+res/site/img/* linguist-vendored
+res/site/js/* linguist-vendored
 
-res/admin/bootstrap linguist-vendored
-res/admin/build linguist-vendored
-res/admin/dist linguist-vendored
-res/admin/documentation linguist-vendored
-res/admin/pages linguist-vendored
-res/admin/plugins linguist-vendored
+res/admin/bootstrap/* linguist-vendored
+res/admin/build/* linguist-vendored
+res/admin/dist/* linguist-vendored
+res/admin/documentation/* linguist-vendored
+res/admin/pages/* linguist-vendored
+res/admin/plugins/* linguist-vendored
